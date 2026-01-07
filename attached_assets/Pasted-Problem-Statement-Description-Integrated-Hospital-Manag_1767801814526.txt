@@ -1,0 +1,108 @@
+Problem Statement Description
+Integrated Hospital Management System for OPD Queuing, Bed Availability, Patient Admission, and Inventory Control
+
+Public hospitals in metropolitan cities like Delhi face persistent operational challenges related to overcrowded OPDs, inefficient patient flow, limited visibility of bed availability, delays in patient admission, and suboptimal inventory management of medicines and consumables. These issues adversely impact service delivery, patient satisfaction, and optimal utilization of healthcare resources.
+
+1. OPD Queuing and Patient Flow Management
+
+Outpatient Departments (OPDs) in government hospitals experience high patient footfall, leading to long waiting times, overcrowding, and uneven load distribution across departments. Currently, OPD registrations and consultations are largely handled through manual or semi-digital processes, lacking real-time queue monitoring and predictive analytics.
+
+There is a strong need for a technology-driven queuing model that can:
+
+Dynamically manage patient queues based on department, doctor availability, and consultation time
+
+Reduce waiting time through intelligent token allocation
+
+Provide real-time visibility to patients and hospital administrators
+
+Support appointment-based and walk-in patient handling
+
+Applying queuing theory models (e.g., M/M/1, M/M/c) can significantly improve OPD throughput and service efficiency.
+
+2. Bed Availability and Patient Admission Management
+
+Hospitals often lack a real-time, centralized view of bed occupancy, resulting in delays during patient admission, inefficient bed utilization, and challenges in emergency case handling. Manual tracking leads to data inconsistencies and poor coordination between OPDs, wards, and emergency units.
+
+A hospital-based digital solution is required to:
+
+Track real-time bed availability across departments (ICU, general ward, specialty wards)
+
+Automate admission, transfer, and discharge workflows
+
+Enable priority-based bed allocation for emergency and critical cases
+
+Provide dashboards for hospital administrators and clinicians
+
+Such a system can reduce admission delays and improve overall hospital capacity management.
+
+3. Medicine Dispensation and Consumables Management
+
+Dispensation of medicines and consumables is a critical hospital function, yet it is often fragmented across pharmacies, stores, and departments. Challenges include:
+
+Stock-outs and overstocking
+
+Manual record-keeping
+
+Lack of real-time consumption tracking
+
+Expiry-related wastage
+
+An integrated Inventory Management Module is required to:
+
+Track procurement, storage, and dispensation of medicines and consumables
+
+Monitor real-time stock levels and expiry dates
+
+Generate automated reorder alerts based on consumption patterns
+
+Support audit trails and regulatory compliance
+
+4. Integration with NIC Modules and City-Wide Systems
+
+The National Informatics Centre (NIC) has already developed multiple healthcare-related modules; however, their implementation in Delhi hospitals is yet to begin. These modules require customization, deployment, and seamless integration with hospital-level systems.
+
+A hospital-based modular solution is ideal, which:
+
+Operates independently at the hospital level
+
+Integrates with existing NIC-developed systems
+
+Scales to a city-wide healthcare management platform
+
+Supports interoperability standards and secure data exchange
+
+5. Proposed Technological Approach
+
+The proposed solution involves developing an Integrated Hospital Management System (IHMS) with the following key components:
+
+OPD Queuing and Appointment Management System
+
+Bed Availability and Admission Management System
+
+Pharmacy and Inventory Management System
+
+Analytics and Decision Support Dashboards
+
+Integration Layer for NIC and city-wide health platforms
+
+The system will leverage:
+
+Real-time data processing
+
+Predictive analytics using queuing models
+
+Role-based access control
+
+Scalable and interoperable architecture
+
+6. Expected Outcomes
+
+Reduced OPD waiting time and improved patient experience
+
+Optimized bed utilization and faster admissions
+
+Efficient medicine and consumable inventory control
+
+Better administrative decision-making through real-time dashboards
+
+A scalable foundation for city-wide healthcare digitization
