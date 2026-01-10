@@ -185,6 +185,8 @@ export class DatabaseStorage implements IStorage {
     const [admissionCount] = await db.select({ count: sql<number>`count(*)` }).from(admissions).where(eq(admissions.status, "active"));
     const [bedCount] = await db.select({ count: sql<number>`count(*)` }).from(beds).where(eq(beds.status, "available"));
     const [apptCount] = await db.select({ count: sql<number>`count(*)` }).from(appointments).where(eq(appointments.status, "scheduled"));
+    // Low stock: quantity <= reorderLevel
+    const [stockCount] = await db.select({ count: sql<number>`count(*)` }).from(inventory).where(sql`${inventory.quantity} <= ${inventory.reorderLevel}`);
     
     // Total Patients = Registered Patients - Discharged Patients
     // But usually Total Patients means total registered. 
