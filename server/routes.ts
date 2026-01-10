@@ -72,7 +72,10 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
   app.post(api.appointments.create.path, async (req, res) => {
     try {
-      const input = api.appointments.create.input.parse(req.body);
+      const bodySchema = api.appointments.create.input.extend({
+        date: z.coerce.date(),
+      });
+      const input = bodySchema.parse(req.body);
       const appointment = await storage.createAppointment(input);
       res.status(201).json(appointment);
     } catch (err) {
@@ -119,7 +122,10 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
   app.post(api.admissions.create.path, async (req, res) => {
     try {
-      const input = api.admissions.create.input.parse(req.body);
+      const bodySchema = api.admissions.create.input.extend({
+        admissionDate: z.coerce.date().optional(),
+      });
+      const input = bodySchema.parse(req.body);
       const admission = await storage.createAdmission(input);
       res.status(201).json(admission);
     } catch (err) {
@@ -153,7 +159,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   app.put(api.inventory.update.path, async (req, res) => {
      const id = parseInt(req.params.id);
      try {
-       const input = api.inventory.update.input.parse(req.body);
+       const bodySchema = api.inventory.update.input.extend({
+         expiryDate: z.coerce.date().optional(),
+         quantity: z.coerce.number().optional(),
+         reorderLevel: z.coerce.number().optional(),
+       });
+       const input = bodySchema.parse(req.body);
        const updated = await storage.updateInventoryItem(id, input);
        res.json(updated);
      } catch(err) {
