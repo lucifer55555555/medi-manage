@@ -1,5 +1,5 @@
 import { useStats } from "@/hooks/use-ihms";
-import { Users, BedDouble, Calendar, Package, AlertCircle } from "lucide-react";
+import { Users, BedDouble, Calendar, Package, AlertCircle, Activity } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
