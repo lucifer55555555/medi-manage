@@ -1,10 +1,11 @@
-import { useStats } from "@/hooks/use-ihms";
-import { Users, BedDouble, Calendar, Package, AlertCircle, Activity } from "lucide-react";
+import { useStats, useAdmissions } from "@/hooks/use-ihms";
+import { Users, BedDouble, Calendar, Package, AlertCircle, Activity, ArrowRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   AreaChart, Area 
 } from 'recharts';
+import { usePatients } from "@/hooks/use-ihms";
 
 function StatCard({ 
   title, 
@@ -47,7 +48,11 @@ const chartData = [
 ];
 
 export default function Dashboard() {
-  const { data: stats, isLoading } = useStats();
+  const { data: stats, isLoading: statsLoading } = useStats();
+  const { data: admissions, isLoading: admissionsLoading } = useAdmissions();
+  const { data: patients } = usePatients();
+
+  const isLoading = statsLoading || admissionsLoading;
 
   if (isLoading) {
     return (
@@ -104,46 +109,80 @@ export default function Dashboard() {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-card rounded-2xl p-6 shadow-sm border border-border/50">
-            <h3 className="text-lg font-bold mb-6 font-display">Patient Flow</h3>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorPatients" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
-                  <Tooltip 
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  />
-                  <Area type="monotone" dataKey="patients" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorPatients)" />
-                </AreaChart>
-              </ResponsiveContainer>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <div className="bg-card rounded-2xl p-6 shadow-sm border border-border/50">
+              <h3 className="text-lg font-bold mb-6 font-display">Patient Flow</h3>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient id="colorPatients" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
+                    <Tooltip 
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    />
+                    <Area type="monotone" dataKey="patients" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorPatients)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className="bg-card rounded-2xl p-6 shadow-sm border border-border/50">
+              <h3 className="text-lg font-bold mb-6 font-display">Admissions Activity</h3>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
+                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
+                    <Tooltip 
+                       cursor={{fill: '#f3f4f6'}}
+                       contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    />
+                    <Bar dataKey="admissions" fill="#8b5cf6" radius={[4, 4, 0, 0]} barSize={40} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
 
-          <div className="bg-card rounded-2xl p-6 shadow-sm border border-border/50">
-            <h3 className="text-lg font-bold mb-6 font-display">Admissions vs Discharges</h3>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: '#6b7280'}} />
-                  <Tooltip 
-                     cursor={{fill: '#f3f4f6'}}
-                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  />
-                  <Bar dataKey="admissions" fill="#8b5cf6" radius={[4, 4, 0, 0]} barSize={40} />
-                </BarChart>
-              </ResponsiveContainer>
+          <div className="bg-card rounded-2xl p-6 shadow-sm border border-border/50 h-fit">
+            <h3 className="text-lg font-bold mb-6 font-display">Recent Admissions</h3>
+            <div className="space-y-4">
+              {admissions && admissions.length > 0 ? (
+                admissions.slice(0, 5).map((admission) => {
+                  const patient = patients?.find(p => p.id === admission.patientId);
+                  return (
+                    <div key={admission.id} className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border/50">
+                      <div>
+                        <p className="font-bold">{patient?.name || 'Unknown Patient'}</p>
+                        <p className="text-xs text-muted-foreground">Admitted: {new Date(admission.admissionDate).toLocaleDateString()}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-purple-600">Active</p>
+                        <p className="text-xs text-muted-foreground">{admission.diagnosis || 'No Diagnosis'}</p>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground italic">No active admissions</p>
+                </div>
+              )}
             </div>
+            {admissions && admissions.length > 5 && (
+              <button className="w-full mt-6 flex items-center justify-center gap-2 text-sm font-bold text-primary hover:underline">
+                View All Admissions <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>
