@@ -180,7 +180,13 @@ export class DatabaseStorage implements IStorage {
     pendingAppointments: number;
     lowStockItems: number;
   }> {
-    const [patientCount] = await db.select({ count: sql<number>`count(*)` }).from(patients);
+    const [patientCount] = await db.select({ count: sql<number>`count(*)` })
+      .from(patients)
+      .where(sql`NOT EXISTS (
+        SELECT 1 FROM ${admissions} 
+        WHERE ${admissions.patientId} = ${patients.id} 
+        AND ${admissions.status} = 'active'
+      )`);
     const [admissionCount] = await db.select({ count: sql<number>`count(*)` }).from(admissions).where(eq(admissions.status, "active"));
     const [bedCount] = await db.select({ count: sql<number>`count(*)` }).from(beds).where(eq(beds.status, "available"));
     const [apptCount] = await db.select({ count: sql<number>`count(*)` }).from(appointments).where(eq(appointments.status, "scheduled"));
