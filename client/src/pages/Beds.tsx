@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Layout } from "@/components/Layout";
 import { useBeds, usePatients, useCreateAdmission } from "@/hooks/use-ihms";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -7,8 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Bed, BedDouble } from "lucide-react";
+import { Bed, BedDouble, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function Beds() {
   const { data: beds, isLoading } = useBeds();
@@ -19,6 +20,24 @@ export default function Beds() {
   const [selectedBed, setSelectedBed] = useState<number | null>(null);
   const [patientId, setPatientId] = useState("");
   const [diagnosis, setDiagnosis] = useState("");
+  const [selectedWards, setSelectedWards] = useState<string[]>([]);
+
+  const wards = useMemo(() => {
+    if (!beds) return [];
+    return Array.from(new Set(beds.map(b => b.ward)));
+  }, [beds]);
+
+  const filteredBeds = useMemo(() => {
+    if (!beds) return [];
+    if (selectedWards.length === 0) return beds;
+    return beds.filter(b => selectedWards.includes(b.ward));
+  }, [beds, selectedWards]);
+
+  const toggleWard = (ward: string) => {
+    setSelectedWards(prev => 
+      prev.includes(ward) ? prev.filter(w => w !== ward) : [...prev, ward]
+    );
+  };
 
   const handleAdmit = async () => {
     if (!selectedBed || !patientId) return;
@@ -46,28 +65,54 @@ export default function Beds() {
           <p className="text-muted-foreground">Visual overview of ward capacity and occupancy.</p>
         </div>
 
-        <div className="flex gap-4 mb-6">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-100 border border-green-500 rounded"></div>
-            <span className="text-sm">Available</span>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border/50">
+          <div className="flex gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-green-100 border border-green-500 rounded"></div>
+              <span className="text-sm font-medium">Available</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-red-100 border border-red-500 rounded"></div>
+              <span className="text-sm font-medium">Occupied</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-gray-100 border border-gray-400 rounded"></div>
+              <span className="text-sm font-medium">Maintenance</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-100 border border-red-500 rounded"></div>
-            <span className="text-sm">Occupied</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gray-100 border border-gray-400 rounded"></div>
-            <span className="text-sm">Maintenance</span>
+
+          <div className="flex items-center gap-4 border-t md:border-t-0 md:border-l pt-4 md:pt-0 md:pl-6">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Filter className="w-4 h-4" />
+              <span className="text-sm font-bold">Filter Wards:</span>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              {wards.map(ward => (
+                <div key={ward} className="flex items-center space-x-2">
+                  <Checkbox 
+                    id={`ward-${ward}`} 
+                    checked={selectedWards.includes(ward)}
+                    onCheckedChange={() => toggleWard(ward)}
+                  />
+                  <label
+                    htmlFor={`ward-${ward}`}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {ward}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 animate-pulse">
-            {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="h-32 bg-muted/50 rounded-xl" />)}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 animate-pulse">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-32 bg-muted/50 rounded-xl" />)}
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {beds?.map((bed) => {
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+            {filteredBeds?.map((bed) => {
               const isAvailable = bed.status === 'available';
               return (
                 <div
@@ -75,17 +120,20 @@ export default function Beds() {
                   onClick={() => isAvailable ? setSelectedBed(bed.id) : null}
                   className={cn(
                     "relative p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center gap-2 h-32 hover:scale-105",
-                    bed.status === 'available' ? "bg-green-50 border-green-200 hover:border-green-500 text-green-700" :
-                    bed.status === 'occupied' ? "bg-red-50 border-red-200 text-red-700 cursor-not-allowed opacity-90" :
+                    bed.status === 'available' ? "bg-green-50 border-green-200 hover:border-green-500 text-green-700 shadow-sm" :
+                    bed.status === 'occupied' ? "bg-red-50 border-red-200 text-red-700 cursor-not-allowed opacity-90 shadow-sm" :
                     "bg-gray-50 border-gray-200 text-gray-500 cursor-not-allowed"
                   )}
                 >
                   <BedDouble className="w-8 h-8" />
                   <div className="text-center">
                     <p className="font-bold">{bed.bedNumber}</p>
-                    <p className="text-xs uppercase opacity-80">{bed.type}</p>
-                    <p className="text-[10px] mt-1 opacity-70">{bed.ward}</p>
+                    <p className="text-[10px] uppercase font-bold opacity-70 tracking-wider">{bed.type}</p>
+                    <p className="text-[10px] mt-1 font-medium opacity-60">{bed.ward}</p>
                   </div>
+                  {bed.status === 'occupied' && (
+                    <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                  )}
                 </div>
               );
             })}

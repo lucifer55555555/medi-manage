@@ -194,7 +194,14 @@ async function seedDatabase() {
     await storage.createDoctor({ name: "Dr. Jones", departmentId: dept2.id, specialty: "Bone Specialist", availableDays: ["Tue", "Thu"], consultationFee: 450 });
     
     await storage.createBed({ ward: "ICU", bedNumber: "ICU-01", type: "ICU", status: "available", departmentId: dept1.id });
+    await storage.createBed({ ward: "ICU", bedNumber: "ICU-02", type: "ICU", status: "available", departmentId: dept1.id });
+    await storage.createBed({ ward: "ICU", bedNumber: "ICU-03", type: "ICU", status: "available", departmentId: dept1.id });
     await storage.createBed({ ward: "General", bedNumber: "GEN-01", type: "General", status: "available", departmentId: dept2.id });
+    await storage.createBed({ ward: "General", bedNumber: "GEN-02", type: "General", status: "available", departmentId: dept2.id });
+    await storage.createBed({ ward: "General", bedNumber: "GEN-03", type: "General", status: "available", departmentId: dept2.id });
+    await storage.createBed({ ward: "General", bedNumber: "GEN-04", type: "General", status: "available", departmentId: dept2.id });
+    await storage.createBed({ ward: "Emergency", bedNumber: "EMG-01", type: "Emergency", status: "available", departmentId: dept1.id });
+    await storage.createBed({ ward: "Emergency", bedNumber: "EMG-02", type: "Emergency", status: "available", departmentId: dept1.id });
     
     await storage.createInventoryItem({ name: "Paracetamol", type: "Medicine", quantity: 500, unit: "strips", reorderLevel: 50, expiryDate: new Date("2026-01-01") });
     await storage.createInventoryItem({ name: "Surgical Masks", type: "Consumable", quantity: 100, unit: "box", reorderLevel: 20, expiryDate: new Date("2025-12-31") });
