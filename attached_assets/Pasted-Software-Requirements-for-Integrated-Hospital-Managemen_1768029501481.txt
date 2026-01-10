@@ -1,0 +1,324 @@
+Software Requirements for Integrated Hospital Management Solution
+
+(OPD Queuing, Bed Availability, Patient Admission & Inventory Management)
+
+1. General System Requirements
+1.1 Core Objectives
+
+The software shall:
+
+Improve OPD efficiency using queuing models
+
+Provide real-time bed availability and admission management
+
+Enable accurate dispensation and inventory management of medicines and consumables
+
+Support integration with NIC-developed modules
+
+Be scalable from hospital-level to city-wide deployment
+
+2. Functional Requirements
+2.1 OPD Queuing & Appointment Management
+2.1.1 Patient Registration
+
+The system shall support online and on-site OPD registration
+
+The system shall generate unique patient IDs
+
+The system shall store patient demographics and visit history
+
+The system shall support walk-in and appointment-based patients
+
+2.1.2 Queue Management
+
+The system shall implement queuing models (e.g., M/M/1, M/M/c)
+
+The system shall dynamically allocate tokens based on:
+
+Doctor availability
+
+Department workload
+
+Average consultation time
+
+The system shall display real-time queue position
+
+The system shall allow priority handling (emergency, senior citizens, pregnant women)
+
+2.1.3 OPD Dashboards
+
+The system shall provide dashboards for:
+
+Doctors
+
+OPD staff
+
+Hospital administrators
+
+The system shall show:
+
+Waiting time estimates
+
+Number of patients per department
+
+Doctor availability
+
+2.2 Bed Availability Management
+2.2.1 Bed Tracking
+
+The system shall maintain real-time bed status:
+
+Available
+
+Occupied
+
+Reserved
+
+Under maintenance
+
+The system shall classify beds by:
+
+ICU
+
+General ward
+
+Emergency
+
+Specialty wards
+
+2.2.2 Bed Allocation
+
+The system shall support automated bed allocation
+
+The system shall prioritize beds for:
+
+Emergency cases
+
+Critical patients
+
+The system shall allow manual override by authorized staff
+
+2.2.3 Bed Transfer & Discharge
+
+The system shall handle:
+
+Inter-ward transfers
+
+Temporary bed blocking
+
+Discharge updates
+
+The system shall automatically update bed availability after discharge
+
+2.3 Patient Admission Management
+2.3.1 Admission Workflow
+
+The system shall support paperless admission
+
+The system shall link admission with:
+
+OPD consultation
+
+Emergency referrals
+
+The system shall record admission details:
+
+Diagnosis
+
+Department
+
+Assigned doctor
+
+Bed number
+
+2.3.2 Emergency Admission
+
+The system shall support fast-track emergency admissions
+
+The system shall allow provisional admissions with minimal data
+
+The system shall update full details later
+
+2.4 Medicine Dispensation & Pharmacy Management
+2.4.1 Medicine Dispensation
+
+The system shall record prescription-based medicine issuance
+
+The system shall link prescriptions to patient records
+
+The system shall track:
+
+Quantity issued
+
+Date and time
+
+Issuing pharmacist
+
+2.4.2 Pharmacy Operations
+
+The system shall manage:
+
+Hospital pharmacy
+
+Departmental stores
+
+The system shall support batch-wise medicine tracking
+
+2.5 Inventory & Consumables Management
+2.5.1 Stock Management
+
+The system shall track inventory for:
+
+Medicines
+
+Medical consumables
+
+Surgical items
+
+The system shall maintain:
+
+Current stock levels
+
+Reorder levels
+
+Supplier details
+
+2.5.2 Expiry & Waste Control
+
+The system shall track expiry dates
+
+The system shall generate alerts for:
+
+Near-expiry items
+
+Expired stock
+
+The system shall support stock disposal records
+
+2.5.3 Procurement & Reorder
+
+The system shall generate auto-reorder alerts
+
+The system shall support demand forecasting using consumption trends
+
+The system shall generate procurement reports
+
+2.6 Integration with NIC & City-Wide Systems
+2.6.1 NIC Integration
+
+The system shall integrate with NIC-developed healthcare modules
+
+The system shall support API-based data exchange
+
+The system shall follow government interoperability standards
+
+2.6.2 City-Wide Integration
+
+The system shall support aggregation of hospital-level data
+
+The system shall allow centralized monitoring at:
+
+District level
+
+City level
+
+The system shall support future expansion to state/national platforms
+
+3. Non-Functional Requirements
+3.1 Performance Requirements
+
+The system shall support high concurrent users
+
+OPD token generation shall occur in real-time
+
+Dashboards shall refresh data within acceptable latency
+
+3.2 Scalability
+
+The system shall support:
+
+Single hospital deployment
+
+Multi-hospital city-wide deployment
+
+The architecture shall be modular and scalable
+
+3.3 Security Requirements
+
+The system shall enforce role-based access control
+
+The system shall ensure data encryption (at rest and in transit)
+
+The system shall maintain audit logs for all critical actions
+
+The system shall comply with government data security norms
+
+3.4 Reliability & Availability
+
+The system shall ensure high availability
+
+The system shall support backup and disaster recovery
+
+The system shall handle system failures gracefully
+
+3.5 Usability Requirements
+
+The system shall have a user-friendly interface
+
+The system shall support multilingual access
+
+The system shall be usable by:
+
+Doctors
+
+Nurses
+
+Administrative staff
+
+Pharmacists
+
+3.6 Maintainability
+
+The system shall support:
+
+Easy updates
+
+Modular upgrades
+
+The system shall allow configuration without code changes
+
+4. Reporting & Analytics Requirements
+
+OPD waiting time analysis
+
+Bed occupancy trends
+
+Admission and discharge statistics
+
+Medicine consumption reports
+
+Inventory wastage reports
+
+Administrative performance dashboards
+
+5. Compliance & Standards
+
+The system shall comply with:
+
+Government e-Governance guidelines
+
+NIC standards
+
+Data privacy regulations
+
+The system shall support audit and compliance reporting
+
+6. Future Enhancement Readiness
+
+Telemedicine integration
+
+AI-based demand forecasting
+
+Mobile app integration
+
+Public-facing patient portals
