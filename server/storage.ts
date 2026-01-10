@@ -181,20 +181,20 @@ export class DatabaseStorage implements IStorage {
     lowStockItems: number;
   }> {
     const [patientCount] = await db.select({ count: sql<number>`count(*)` })
-      .from(patients)
-      .where(sql`NOT EXISTS (
-        SELECT 1 FROM ${admissions} 
-        WHERE ${admissions.patientId} = ${patients.id} 
-        AND ${admissions.status} = 'active'
-      )`);
+      .from(patients);
     const [admissionCount] = await db.select({ count: sql<number>`count(*)` }).from(admissions).where(eq(admissions.status, "active"));
     const [bedCount] = await db.select({ count: sql<number>`count(*)` }).from(beds).where(eq(beds.status, "available"));
     const [apptCount] = await db.select({ count: sql<number>`count(*)` }).from(appointments).where(eq(appointments.status, "scheduled"));
-    // Low stock: quantity <= reorderLevel
-    const [stockCount] = await db.select({ count: sql<number>`count(*)` }).from(inventory).where(sql`${inventory.quantity} <= ${inventory.reorderLevel}`);
+    
+    // Total Patients = Registered Patients - Discharged Patients
+    // But usually Total Patients means total registered. 
+    // If the user wants it to be "Current Patients", we should subtract discharged ones.
+    const [dischargedCount] = await db.select({ count: sql<number>`count(*)` })
+      .from(admissions)
+      .where(eq(admissions.status, "discharged"));
 
     return {
-      totalPatients: Number(patientCount.count),
+      totalPatients: Math.max(0, Number(patientCount.count) - Number(dischargedCount.count)),
       activeAdmissions: Number(admissionCount.count),
       availableBeds: Number(bedCount.count),
       pendingAppointments: Number(apptCount.count),
