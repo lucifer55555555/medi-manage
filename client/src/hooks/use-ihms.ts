@@ -73,7 +73,10 @@ export function useCreatePatient() {
       const res = await apiRequest("POST", api.patients.create.path, data);
       return api.patients.create.responses[201].parse(await res.json());
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.patients.list.path] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.patients.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.stats.get.path] });
+    },
   });
 }
 
@@ -99,7 +102,10 @@ export function useCreateAppointment() {
       const res = await apiRequest("POST", api.appointments.create.path, data);
       return api.appointments.create.responses[201].parse(await res.json());
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.appointments.list.path] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.appointments.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.stats.get.path] });
+    },
   });
 }
 
@@ -111,7 +117,10 @@ export function useUpdateAppointment() {
       const res = await apiRequest("PUT", url, updates);
       return api.appointments.update.responses[200].parse(await res.json());
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.appointments.list.path] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.appointments.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.stats.get.path] });
+    },
   });
 }
 
@@ -150,6 +159,7 @@ export function useCreateAdmission() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.admissions.list.path] });
       queryClient.invalidateQueries({ queryKey: [api.beds.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.stats.get.path] });
     },
   });
 }
@@ -165,6 +175,7 @@ export function useDischargePatient() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.admissions.list.path] });
       queryClient.invalidateQueries({ queryKey: [api.beds.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.stats.get.path] });
     },
   });
 }
