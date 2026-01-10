@@ -204,7 +204,13 @@ async function seedDatabase() {
     await storage.createBed({ ward: "Emergency", bedNumber: "EMG-02", type: "Emergency", status: "available", departmentId: dept1.id });
     
     await storage.createInventoryItem({ name: "Paracetamol", type: "Medicine", quantity: 500, unit: "strips", reorderLevel: 50, expiryDate: new Date("2026-01-01") });
+    await storage.createInventoryItem({ name: "Amoxicillin", type: "Medicine", quantity: 200, unit: "strips", reorderLevel: 30, expiryDate: new Date("2025-11-15") });
+    await storage.createInventoryItem({ name: "Ibuprofen", type: "Medicine", quantity: 150, unit: "strips", reorderLevel: 25, expiryDate: new Date("2026-03-20") });
+    await storage.createInventoryItem({ name: "Insulin", type: "Medicine", quantity: 40, unit: "vials", reorderLevel: 10, expiryDate: new Date("2025-09-10") });
     await storage.createInventoryItem({ name: "Surgical Masks", type: "Consumable", quantity: 100, unit: "box", reorderLevel: 20, expiryDate: new Date("2025-12-31") });
+    await storage.createInventoryItem({ name: "Gloves (Latex)", type: "Consumable", quantity: 50, unit: "box", reorderLevel: 15, expiryDate: new Date("2026-06-15") });
+    await storage.createInventoryItem({ name: "Syringes (5ml)", type: "Consumable", quantity: 300, unit: "pcs", reorderLevel: 50, expiryDate: new Date("2027-01-01") });
+    await storage.createInventoryItem({ name: "Hand Sanitizer", type: "Consumable", quantity: 20, unit: "bottles", reorderLevel: 5, expiryDate: new Date("2026-12-01") });
     
     await storage.createPatient({ name: "John Doe", age: 45, gender: "Male", contact: "555-1234", address: "123 Main St", medicalHistory: "None" });
   }
