@@ -29,7 +29,7 @@ export default function Inventory() {
     return {
       total: items.length,
       lowStock: items.filter(i => i.quantity <= i.reorderLevel).length,
-      expiringSoon: items.filter(i => isBefore(new Date(i.expiryDate), soon)).length
+      expiringSoon: items.filter(i => i.quantity > 0 && isBefore(new Date(i.expiryDate), soon)).length
     };
   }, [items]);
 
@@ -156,13 +156,22 @@ export default function Inventory() {
               ) : filtered?.map((item) => {
                 const isLowStock = item.quantity <= item.reorderLevel;
                 const expiryDate = new Date(item.expiryDate);
-                const isExpiring = isBefore(expiryDate, addDays(new Date(), 30));
+                const isExpired = isBefore(expiryDate, new Date());
+                const isExpiring = item.quantity > 0 && isBefore(expiryDate, addDays(new Date(), 30));
                 
                 return (
-                  <TableRow key={item.id} className="hover:bg-muted/30 transition-colors">
+                  <TableRow key={item.id} className={cn(
+                    "hover:bg-muted/30 transition-colors",
+                    isExpired && item.quantity > 0 && "bg-rose-50/50"
+                  )}>
                     <TableCell>
                       <div>
-                        <p className="font-bold text-foreground">{item.name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-bold text-foreground">{item.name}</p>
+                          {isExpired && item.quantity > 0 && (
+                            <Badge variant="destructive" className="h-4 text-[8px] px-1 uppercase">Expired</Badge>
+                          )}
+                        </div>
                         <p className="text-xs text-muted-foreground">{item.unit}</p>
                       </div>
                     </TableCell>
@@ -193,15 +202,20 @@ export default function Inventory() {
                       <div className="flex flex-col">
                         <span className={cn(
                           "font-medium",
+                          isExpired && item.quantity > 0 ? "text-destructive font-bold" :
                           isExpiring ? "text-rose-600" : "text-foreground"
                         )}>
                           {format(expiryDate, "MMM dd, yyyy")}
                         </span>
-                        {isExpiring && (
+                        {isExpired && item.quantity > 0 ? (
+                          <span className="text-[10px] text-destructive font-black uppercase tracking-tighter">
+                            Dispose Immediately!
+                          </span>
+                        ) : isExpiring ? (
                           <span className="text-[10px] text-rose-500 font-bold uppercase tracking-tighter">
                             Expiring Soon!
                           </span>
-                        )}
+                        ) : null}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
