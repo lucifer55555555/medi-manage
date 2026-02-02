@@ -211,15 +211,17 @@ export default function Inventory() {
                           variant="outline" 
                           className="h-9 w-9 rounded-lg hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 transition-all" 
                           onClick={() => handleAdjust(item.id, item.quantity, -1)}
+                          data-testid={`button-decrease-${item.id}`}
                         >
                           <Minus className="w-4 h-4" />
                         </Button>
-                        <div className="w-8 text-center font-bold">{item.quantity}</div>
+                        <div className="w-8 text-center font-bold" data-testid={`text-quantity-${item.id}`}>{item.quantity}</div>
                         <Button 
                           size="icon" 
                           variant="outline" 
                           className="h-9 w-9 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200 transition-all" 
                           onClick={() => handleAdjust(item.id, item.quantity, 1)}
+                          data-testid={`button-increase-${item.id}`}
                         >
                           <Plus className="w-4 h-4" />
                         </Button>
