@@ -189,7 +189,7 @@ export class DatabaseStorage implements IStorage {
     const [stockCount] = await db.select({ count: sql<number>`count(*)` }).from(inventory).where(sql`${inventory.quantity} <= ${inventory.reorderLevel}`);
     
     return {
-      totalPatients: Number(admissionCount.count), 
+      totalPatients: Number(patientCount.count), 
       activeAdmissions: Number(admissionCount.count),
       availableBeds: Number(bedCount.count),
       pendingAppointments: Number(apptCount.count),
