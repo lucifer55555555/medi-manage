@@ -160,7 +160,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getInventory(): Promise<InventoryItem[]> {
-    return await db.select().from(inventory);
+    return await db.select().from(inventory).orderBy(inventory.id);
   }
 
   async createInventoryItem(item: InsertInventoryItem): Promise<InventoryItem> {
