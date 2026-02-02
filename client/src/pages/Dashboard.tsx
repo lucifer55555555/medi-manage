@@ -313,7 +313,7 @@ export default function Dashboard() {
                               </div>
                               <div>
                                 <p className="font-bold text-sm tracking-tight">{patient?.name || 'Unknown Patient'}</p>
-                                <p className="text-[10px] font-medium text-muted-foreground">Ward: {admission.bedId}</p>
+                                <p className="text-[10px] font-medium text-muted-foreground">ID: {patient?.id || admission.patientId}</p>
                               </div>
                             </div>
                             <div className="text-right">

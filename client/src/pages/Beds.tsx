@@ -129,7 +129,7 @@ export default function Beds() {
                   <div className="text-center">
                     <p className="font-bold">{bed.bedNumber}</p>
                     <p className="text-[10px] uppercase font-bold opacity-70 tracking-wider">{bed.type}</p>
-                    <p className="text-[10px] mt-1 font-medium opacity-60">{bed.ward}</p>
+                    <p className="text-[10px] mt-1 font-medium opacity-60">Ward: {bed.ward}</p>
                   </div>
                   {bed.status === 'occupied' && (
                     <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
