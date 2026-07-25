@@ -77,6 +77,4 @@ The application will be available at `http://localhost:5000`.
 - `npm run check`: Runs TypeScript type checking.
 - `npm run db:push`: Pushes schema changes to the SQLite database.
 
-## 📄 License
 
-This project is licensed under the MIT License.
