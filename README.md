@@ -172,8 +172,6 @@ The original problem statement this project is based on calls for queuing-theory
 
 ## Author
 
-**Krish Agrawal**
+**Pratham Chandpurkar**
 
-## License
 
-There is **no LICENSE file in this repository**. `package.json` does contain a `"license": "MIT"` field, but a field in `package.json` is not itself a license grant — without an actual `LICENSE` file, the code defaults to standard copyright: all rights reserved by the author. If you want this to actually be MIT-licensed (or anything else), add a proper `LICENSE` file with that text; until then, treat reuse, redistribution, or deployment of this code as something to check with the author about first. This project's stated purpose is educational/hackathon-prototype in nature.
